@@ -81,7 +81,7 @@ export default function RegistrationScreen() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [candidateName, setCandidateName] = useState('...');
+  const [candidateName, setCandidateName] = useState('');
 
   // Update specific fields and clear their errors
   const updateField = <K extends keyof RegistrationFormData>(field: K, value: RegistrationFormData[K]) => {
@@ -99,7 +99,7 @@ export default function RegistrationScreen() {
       if (value && String(value).length > 5) {
         setCandidateName('ABHILASH'); // Mock lookup
       } else {
-        setCandidateName('...');
+        setCandidateName('');
       }
     }
   };
@@ -168,7 +168,7 @@ export default function RegistrationScreen() {
                 placeholder="Enter Registration No."
                 value={formData.registrationNo}
                 onChangeText={(val) => updateField('registrationNo', val)}
-                className="flex-1 h-10 text-base font-normal"
+                className="flex-1 h-12 text-base font-normal"
                 placeholderTextColor={Theme.colors.secondaryText}
                 style={{ fontFamily: 'Poppins' }}
               />
@@ -190,7 +190,7 @@ export default function RegistrationScreen() {
                 maxLength={10}
                 value={formData.mobileNo}
                 onChangeText={(val) => updateField('mobileNo', val)}
-                className="flex-1 h-10 text-base font-normal"
+                className="flex-1 h-12 text-base font-normal"
                 placeholderTextColor={Theme.colors.secondaryText}
                 style={{ fontFamily: 'Poppins' }}
               />
@@ -248,7 +248,7 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        <View className="flex-row items-start mb-12 px-1">
+        <View className="flex-row items-start mb-6 px-1">
           <TouchableOpacity 
             activeOpacity={0.8}
             className="w-7 h-7 rounded-lg border-2 items-center justify-center mr-4"
