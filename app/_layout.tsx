@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { View, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import "@/global.css";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [appReady, setAppReady] = useState(false);
+  const [splashAnimationFinished, setSplashAnimationFinished] = useState(false);
+
   const [loaded, error] = useFonts({
     'Poppins': Poppins_400Regular,
     'Poppins-Bold': Poppins_700Bold,
@@ -17,6 +22,8 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded || error) {
+      // Data/Assets are ready, we can hide the native splash
+      setAppReady(true);
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
@@ -26,7 +33,7 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={styles.container}>
       <StatusBar style="dark" translucent={true} backgroundColor="transparent" />
       <Stack screenOptions={{ 
         headerShown: false,
@@ -38,6 +45,17 @@ export default function RootLayout() {
         <Stack.Screen name="player" options={{ title: 'Exam Player' }} />
         <Stack.Screen name="completion" options={{ title: 'Exam Completion' }} />
       </Stack>
+
+      {/* Overlay Animated Splash until finished */}
+      {!splashAnimationFinished && appReady && (
+        <AnimatedSplashScreen onAnimationComplete={() => setSplashAnimationFinished(true)} />
+      )}
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
